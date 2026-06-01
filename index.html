@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Astra Client 2 — Eaglercraft Reimagined</title>
+    <meta name="title" content="Astra Client 2 — Eaglercraft Reimagined">
+    <meta name="description"
+        content="Astra Client 2 is the most advanced Eaglercraft client in history. Featuring world-first friends lists, cross-server private messaging, and full .aschem schematic support.">
+    <meta name="keywords"
+        content="Eaglercraft, EaglercraftX, Minecraft, Browser Minecraft, Astra Client, Astra Client 2, Minecraft Client, BarneyTheGod">
+    <meta name="author" content="BarneyTheGod">
+    <meta name="theme-color" content="#6045b0">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://astraclient.com/">
+    <meta property="og:title" content="Astra Client 2 — Eaglercraft Reimagined">
+    <meta property="og:description"
+        content="Friends lists. Cross-server messaging. Custom schematics. Experience the next generation of Eaglercraft.">
+    <meta property="og:image" content="https://astraclient.com/banner.png">
+
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <link rel="shortcut icon" href="logo.ico">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Import Maps for Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="styles.css">
+
+    
+</head>
+
+<body>
+
+    <div id="progress"></div>
+
+    <!-- Delay Announcement Modal -->
+    <div id="delay-modal">
+        <div class="delay-box">
+            <div class="delay-banner">
+                <div class="delay-banner-icon"><img src="logo.png" alt="Astra Client 2"
+                        style="width:100%;height:100%;object-fit:contain;padding:6px;"></div>
+                <div class="delay-banner-text">
+                    <div class="delay-banner-pill">Important Update</div>
+                    <div class="delay-banner-title">RELEASE DELAYED</div>
+                </div>
+            </div>
+            <div class="delay-body">
+                <p>Due to <strong>unforeseen circumstances</strong>, we are currently unable to confirm a release date
+                    for Astra Client 2. We understand how much the community has been looking forward to this launch,
+                    and we sincerely appreciate your patience.</p>
+                <p>Our team is working hard behind the scenes to deliver the best possible experience. We are committed
+                    to getting the client into your hands <strong>as soon as we can</strong>.</p>
+                <div class="delay-divider"></div>
+                <div class="delay-status-row">
+                    <div class="delay-status-dot"></div>
+                    <div class="delay-status-text">Development is ongoing — updates posted in Discord</div>
+                    <div class="delay-status-tag">In Progress</div>
+                </div>
+            </div>
+            <div class="delay-footer">
+                <a href="https://dsc.gg/astraclient" target="_blank">
+                    <i class="bx bxl-discord-alt"></i> Stay updated on Discord
+                </a>
+                <button class="delay-dismiss" onclick="closeDelayModal()">Got It</button>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="logo-sq"><img src="logo.png" alt="Logo"></div>
+                ASTRA CLIENT 2
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#schematics">Schematics</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#get-it">Get It</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="bx bx-moon" id="themeIcon"></i>
+                </button>
+                <a href="https://dsc.gg/astraclient" target="_blank" class="btn-ghost">
+                    <i class="bx bxl-discord-alt"></i> Discord
+                </a>
+                <button class="btn-primary" onclick="openModal()">
+                    <i class="bx bx-download"></i> Download Beta
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="hero-top">
+            <div>
+                <div class="hero-eyebrow">
+                    <div class="eyebrow-dot"></div>
+                    Beta Live Now — Official Release Date TBD
+                </div>
+                <p style="font-size:0.83rem;color:var(--muted);letter-spacing:0.03em;">Built for the Eaglercraft
+                    community. Ahead of everything else.</p>
+            </div>
+                <div class="hero-date">June 15</div>
+        </div>
+
+        <div class="hero-title-wrap">
+            <h1>
+                EAGLERCRAFT<br>
+                RE<span class="accent-word">IMAGINED</span>
+            </h1>
+        </div>
+
+        <div class="hero-bottom">
+            <div class="hero-desc">
+                <p>Friends lists. Cross-server private messaging. Custom schematica port, preview, and paste. No other
+                    Eaglercraft client has ever come close.</p>
+                <div class="hero-cta">
+                    <button class="btn-fill" onclick="openModal()">
+                        <i class="bx bx-download"></i> Download Beta
+                    </button>
+                    <a href="https://dsc.gg/astraclient" target="_blank" class="btn-outline">
+                        <i class="bx bxl-discord-alt"></i> Discord
+                    </a>
+                </div>
+            </div>
+            <div class="hero-stats-col">
+                <div class="hero-stat">
+                    <div class="stat-num accent">#1</div>
+                    <div class="stat-label">First friends system in Eaglercraft history</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-num">3</div>
+                    <div class="stat-label">World-first features</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-num">2</div>
+                    <div class="stat-label">Versions — 1.8.8 &amp; 1.12.2</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">Friends List <b>★ World First</b></div>
+            <div class="ticker-item">Private Messaging <b>★ World First</b></div>
+            <div class="ticker-item">Custom Schematics <b>★ World First</b></div>
+            <div class="ticker-item">Release Date <b>TBD</b></div>
+            <div class="ticker-item">1.8.8 &amp; 1.12.2 Builds</div>
+            <div class="ticker-item">Beats Resent Client</div>
+            <div class="ticker-item">Friends List <b>★ World First</b></div>
+            <div class="ticker-item">Private Messaging <b>★ World First</b></div>
+            <div class="ticker-item">Custom Schematics <b>★ World First</b></div>
+            <div class="ticker-item">Release Date <b>TBD</b></div>
+            <div class="ticker-item">1.8.8 &amp; 1.12.2 Builds</div>
+            <div class="ticker-item">Beats Resent Client</div>
+        </div>
+    </div>
+
+    <section id="features">
+        <div class="section-wrap">
+            <div class="feat-header">
+                <div class="feat-header-left reveal">
+                    <div class="section-num">01 — Features</div>
+                    <h2>THREE THINGS<br>NO ONE ELSE<br>HAS DONE.</h2>
+                </div>
+                <div class="feat-header-right reveal d1">
+                    <p>Astra Client 2 brings true social gameplay and advanced building tools to Eaglercraft. Features
+                        the community has been asking for since Eaglercraft launched.</p>
+                </div>
+            </div>
+
+            <div class="feat-cards">
+                <div class="feat-card reveal">
+                    <div class="feat-card-img-wrap">
+                        <img class="feat-card-img" src="image1.png" alt="Feature 1">
+                    </div>
+                    <div class="feat-card-body">
+                        <div class="feat-num">01</div>
+                        <div class="feat-tag"><i class="bx bx-group"></i> World First</div>
+                        <div class="feat-icon-box"><i class="bx bx-group"></i></div>
+                        <div class="feat-title">FRIENDS LIST</div>
+                        <p class="feat-body">Add friends across any server. See real-time status, which server they're
+                            on, and join instantly. <strong>Never existed in Eaglercraft before now.</strong></p>
+                    </div>
+                </div>
+
+                <div class="feat-card reveal d1">
+                    <div class="feat-card-img-wrap">
+                        <img class="feat-card-img" src="image2.png" alt="Feature 2">
+                    </div>
+                    <div class="feat-card-body">
+                        <div class="feat-num">02</div>
+                        <div class="feat-tag"><i class="bx bx-message-dots"></i> World First</div>
+                        <div class="feat-icon-box"><i class="bx bx-message-dots"></i></div>
+                        <div class="feat-title">PRIVATE MESSAGING</div>
+                        <p class="feat-body">DMs and group chats that follow you across every server in real time.
+                            <strong>All messages are encrypted and secure.</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="feat-card reveal d2">
+                    <div class="feat-card-img-wrap">
+                        <img class="feat-card-img" src="image3.png" alt="Feature 3">
+                    </div>
+                    <div class="feat-card-body">
+                        <div class="feat-num">03</div>
+                        <div class="feat-tag"><i class="bx bx-cube-alt"></i> World First</div>
+                        <div class="feat-icon-box"><i class="bx bx-cube-alt"></i></div>
+                        <div class="feat-title">SCHEMATICS</div>
+                        <p class="feat-body">Import custom .aschem files directly in-game. Preview, rotate, mirror,
+                            paste. <strong>WorldEdit-level power in your browser. First time ever.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Community Schematic Hub (New Section 02) ── -->
+    <section id="schematics">
+        <div class="section-wrap">
+            <div class="feat-header">
+                <div class="feat-header-left reveal">
+                    <div class="section-num">02 — Schematic Hub</div>
+                    <h2>COMMUNITY<br>CREATIVE SHIELD.</h2>
+                </div>
+                <div class="feat-header-right reveal d1"
+                    style="display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:1rem;">
+                    <p>Share your builds securely. Astra Client 2's locally run parser renders .aschem structural data
+                        into snapshots directly on your computer. NSFW or spoofed image uploads are physically
+                        impossible.</p>
+                    <button class="btn-primary" onclick="openAllSchematicsModal()">
+                        <i class="bx bx-list-ul"></i> View All Schematics
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preloaded Schematic Row Grid (4 per row) -->
+            <div class="schematic-grid" id="schematicGrid">
+                <!-- Dynamically populated or Preloaded items render here -->
+            </div>
+            <div style="text-align: center; margin-top: 2rem; display: flex; justify-content: center;">
+                <button class="btn-outline" onclick="openAllSchematicsModal()">View All Schematics</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap">
+        <div class="section-wrap">
+            <div class="roadmap-header reveal">
+                <div class="section-num">03 — Roadmap</div>
+                <h2>BETA TO<br>RELEASE.</h2>
+            </div>
+            <div class="roadmap-row active reveal">
+                <div class="rm-date">NOW</div>
+                <div class="rm-content">
+                    <div class="rm-title">BETA PHASE</div>
+                    <p class="rm-body">All three world-first features are live and testable. Join the Discord to get
+                        access.</p>
+                </div>
+                <div class="rm-status live">● Live</div>
+            </div>
+            <div class="roadmap-row reveal">
+                <div class="rm-date">TBD</div>
+                <div class="rm-content">
+                    <div class="rm-title">ACCOUNT SYSTEM &amp; POLISH</div>
+                    <p class="rm-body">Full account system rollout, HUD customization improvements, performance
+                        optimization, and bug fixes from beta feedback.</p>
+                </div>
+                <div class="rm-status">In Progress</div>
+            </div>
+            <div class="roadmap-row reveal">
+                <div class="rm-date">TBD</div>
+                <div class="rm-content">
+                    <div class="rm-title">STABLE LAUNCH</div>
+                    <p class="rm-body">Polished 1.8.8 &amp; 1.12.2 builds, full documentation, community server
+                        integrations. Release date to be announced.</p>
+                </div>
+                <div class="rm-status">Upcoming</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="get-it">
+        <div class="cta-grid">
+            <div class="cta-left reveal">
+                <div class="section-num" style="color:rgba(255,255,255,0.35)">04 — Get It</div>
+                <h2>JOIN THE<br>FIRST WAVE.</h2>
+                <p>Be among the first to experience what Eaglercraft was always supposed to feel like. Beta is live.
+                    Stable release coming soon.</p>
+                <button class="btn-inv" onclick="openModal()">
+                    <i class="bx bx-download"></i> Download Beta
+                </button>
+            </div>
+            <div class="cta-right reveal d1">
+                <a href="https://dsc.gg/astraclient" target="_blank" class="cta-option">
+                    <div>
+                        <div class="opt-label">JOIN THE DISCORD</div>
+                        <div class="opt-sub">Beta Access · Community · Updates</div>
+                    </div>
+                    <div class="opt-arrow"><i class="bx bxl-discord-alt"></i></div>
+                </a>
+                <div class="cta-option" onclick="openModal()">
+                    <div>
+                        <div class="opt-label">DIRECT DOWNLOAD</div>
+                        <div class="opt-sub">Latest Beta Build · 1.8.8 &amp; 1.12.2</div>
+                    </div>
+                    <div class="opt-arrow"><i class="bx bx-download"></i></div>
+                </div>
+                <a href="#features" class="cta-option">
+                    <div>
+                        <div class="opt-label">LEARN MORE</div>
+                        <div class="opt-sub">Features · Roadmap</div>
+                    </div>
+                    <div class="opt-arrow"><i class="bx bx-chevron-right"></i></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-col">
+            <div class="footer-brand-logo">
+                <div class="logo-sq"><img src="logo.png" alt="Logo"></div>
+                ASTRA CLIENT 2
+            </div>
+            <p>The first Eaglercraft client with native friends, private messaging, and custom schematics.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Community</h5>
+            <a href="https://dsc.gg/astraclient"><i class="bx bxl-discord-alt"></i> Discord</a>
+            <a href="#"><i class="bx bxl-github"></i> GitHub</a>
+        </div>
+        <div class="footer-col">
+            <h5>Product</h5>
+            <a href="#features">Features</a>
+            <a href="#roadmap">Roadmap</a>
+        </div>
+        <div class="footer-col">
+            <h5>Download</h5>
+            <a href="#" onclick="openModal();return false;">Latest Beta</a>
+            <a href="#">1.8.8 Build</a>
+            <a href="#">1.12.2 Build</a>
+        </div>
+    </footer>
+    <div class="footer-bottom">
+        <p>Not affiliated with Mojang or Microsoft. Built on EaglercraftX by lax1dude &amp; community.</p>
+        <p>© 2026 BarneyTheGod</p>
+    </div>
+    <div class="notice-bar">
+        <span class="notice-pill">Notice</span>
+                <p>Release date for Astra Client 2 is currently June 15. We'll announce updates in Discord as soon as they're available.</p>
+    </div>
+
+    <!-- ── Download Modal ── -->
+    <div id="download-modal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div>
+                    <h3>GET ASTRA CLIENT 2</h3>
+                    <p>Beta now · Stable release coming soon</p>
+                </div>
+                <button class="modal-close" onclick="closeModal()"><i class="bx bx-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <a href="javascript:void(0)" class="modal-opt" onclick="downloadBoth()">
+                    <div>
+                        <h4>LATEST BETA BUILD</h4>
+                        <div class="modal-opt-sub">1.8.8 & 1.12.2 · Updated daily · All features</div>
+                    </div>
+                    <i class="bx bx-download modal-opt-icon"></i>
+                </a>
+
+                <div class="modal-divider">— or choose a version —</div>
+
+                <div class="modal-ver-row">
+                    <a href="astra18.html" download="astra18.html" class="modal-ver">
+                        <span>Minecraft 1.8.8</span>
+                        <strong>WASM BUILD</strong>
+                    </a>
+                    <a href="astra112.html" download="astra112.html" class="modal-ver">
+                        <span>Minecraft 1.12.2</span>
+                        <strong>WASM BUILD</strong>
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="https://dsc.gg/astraclient" target="_blank">
+                    <i class="bx bxl-discord-alt"></i> Join Discord for beta access
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Schematic Upload Modal with built-in WebGL Canvas ── -->
+    <div id="upload-modal">
+        <div class="modal-box upload-box">
+            <div class="modal-head">
+                <div>
+                    <h3>SHARE CREATION</h3>
+                    <p>NSFW safe block validation and thumbnail compiler</p>
+                </div>
+                <button class="modal-close" onclick="closeUploadModal()"><i class="bx bx-x"></i></button>
+            </div>
+            <div class="upload-modal-body">
+                <div class="upload-drag-zone" id="uploadDragZone">
+                    <i class="bx bx-cloud-upload"></i>
+                    <span>Drop your .aschem file or click to browse</span>
+                    <input type="file" id="schemFileInput" accept=".aschem" style="display: none;">
+                </div>
+
+                <!-- 3D Viewport container -->
+                <div id="modal-viewport-container">
+                    <div class="viewport-badge">Live interactive snapshot render</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="schemNameInput">Schematic Name</label>
+                    <input type="text" id="schemNameInput" placeholder="Epic Medieval Castle">
+                </div>
+
+                    <div class="input-group">
+                        <label for="schemAuthorInput">Creator Name</label>
+                        <input type="text" id="schemAuthorInput" placeholder="Your Username">
+                    </div>
+                </div>
+                <div style="padding: 1rem 1.5rem 1.5rem; border-top: 1px solid var(--rule); display: flex; justify-content: flex-end; gap: 0.75rem; background: var(--bg2);">
+                    <button class="btn-ghost" onclick="closeUploadModal()">Cancel</button>
+                    <button class="btn-primary" id="confirmUploadBtn" onclick="confirmUpload()" disabled>Upload</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- View All Schematics Modal -->
+        <div id="all-schematics-modal" style="display: none; position: fixed; inset: 0; background: rgba(14, 12, 22, 0.7); backdrop-filter: blur(10px); z-index: 550; align-items: center; justify-content: center; padding: 2rem;">
+            <div class="upload-box" style="max-width: 1000px; max-height: 90vh;">
+                <div class="modal-head" style="padding: 1.6rem 1.75rem 1.4rem; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="font-family: var(--display); font-size: 1.8rem; color: var(--ink);">Community Schematics</h3>
+                        <p style="font-size: 0.73rem; color: var(--muted); margin-top: 0.35rem;">Explore all custom schematics created by the community.</p>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn-primary" onclick="openUploadModal()">
+                            <i class="bx bx-upload"></i> Share Schematic
+                        </button>
+                        <button class="modal-close" onclick="closeAllSchematicsModal()"><i class="bx bx-x"></i></button>
+                    </div>
+                </div>
+                <div class="modal-body" style="padding: 1.5rem; overflow-y: auto;">
+                    <div class="schematic-grid" id="modalSchematicGrid">
+                        <!-- All schematics render here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="preview.js"></script>
+    
+</body>
+
+</html>
