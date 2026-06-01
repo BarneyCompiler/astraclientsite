@@ -68,23 +68,7 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
 
-// Delay announcement modal — show on load, once per session
-window.closeDelayModal = function () {
-    document.getElementById('delay-modal').classList.remove('open');
-    sessionStorage.setItem('ac2-delay-seen', '1');
-};
-
-document.getElementById('delay-modal').addEventListener('click', e => {
-    if (e.target === document.getElementById('delay-modal')) closeDelayModal();
-});
-
-window.addEventListener('load', () => {
-    if (!sessionStorage.getItem('ac2-delay-seen')) {
-        setTimeout(() => {
-            document.getElementById('delay-modal').classList.add('open');
-        }, 600);
-    }
-});
+// Delay announcement removed
 
 // ── 3D Schematic Thumbnail Generator Engine ──
 const TEXTURE_BASE_URL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.12.2/assets/minecraft/textures/blocks/';
@@ -143,6 +127,16 @@ function getBlockMaterial(id, meta) {
         case 98: tex = 'stonebrick.png'; break;
         case 89: tex = 'glowstone.png'; break;
         case 159: tex = `hardened_clay_stained_${mcColor}.png`; color = hex; break;
+        // New block types
+        case 66: tex = 'rail.png'; geomType = 'RAIL'; break; // Rail
+        case 27: tex = 'powered_rail.png'; geomType = 'RAIL'; break; // Powered Rail
+        case 28: tex = 'detector_rail.png'; geomType = 'RAIL'; break; // Detector Rail
+        case 157: tex = 'activator_rail.png'; geomType = 'RAIL'; break; // Activator Rail
+        case 145: tex = 'anvil_top.png'; geomType = 'ANVIL'; break; // Anvil
+        case 30: tex = 'cobweb.png'; alpha = true; geomType = 'CROSS'; break; // Cobweb as cross
+        case 96: tex = 'trapdoor.png'; geomType = 'SLAB_TOP'; break; // Trapdoor as slab top
+        case 124: tex = 'snow.png'; geomType = 'SLAB_BOTTOM'; break; // Snow layer as slab bottom
+        default: tex = null; break;
     }
 
     if (color === null) {
@@ -162,7 +156,8 @@ const geomFence = new THREE.BoxGeometry(0.25, 1, 0.25);
 const geomPaneX = new THREE.BoxGeometry(1, 1, 0.06);
 
 // Billboard Cross Geometries
-const geomCross = new THREE.BufferGeometry();
+const geomRail = new THREE.BoxGeometry(1, 0.1, 0.1); // Simple rail placeholder
+
 const vertsCross = new Float32Array([
     -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5,
     -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5,
@@ -201,16 +196,28 @@ const geomStairs = BufferGeometryUtils.mergeGeometries([baseStairPart, topStairP
 
 function getGeometryForType(geomType) {
     switch (geomType) {
-        case 'SLAB_BOTTOM': return geomSlabBottom;
-        case 'SLAB_TOP': return geomSlabTop;
-        case 'CHEST': return geomChest;
-        case 'PLATE': return geomPlate;
-        case 'FENCE': return geomFence;
-        case 'PANE': return geomPaneX;
-        case 'PANE_CROSS': return geomPaneCross;
-        case 'CROSS': return geomCross;
-        case 'STAIRS': return geomStairs;
-        default: return geomCube;
+        case 'SLAB_BOTTOM':
+            return geomSlabBottom;
+        case 'SLAB_TOP':
+            return geomSlabTop;
+        case 'CHEST':
+            return geomChest;
+        case 'PLATE':
+            return geomPlate;
+        case 'FENCE':
+            return geomFence;
+        case 'PANE':
+            return geomPaneX;
+        case 'PANE_CROSS':
+            return geomPaneCross;
+        case 'CROSS':
+            return geomCross;
+        case 'RAIL':
+            return geomRail;
+        case 'STAIRS':
+            return geomStairs;
+        default:
+            return geomCube;
     }
 }
 
@@ -369,10 +376,17 @@ function renderSchematicToViewport(data) {
             if (info.geomType === 'STAIRS') {
                 const isUpsideDown = (meta & 4) !== 0;
                 const direction = meta & 3;
+                // Minecraft stair orientation: 0=east, 1=west, 2=south, 3=north
+                let rotY = 0;
+                switch(direction) {
+                    case 0: rotY = 0; break; // east
+                    case 1: rotY = Math.PI; break; // west
+                    case 2: rotY = Math.PI / 2; break; // south
+                    case 3: rotY = -Math.PI / 2; break; // north
+                }
+                dummy.rotation.y = rotY;
                 if (isUpsideDown) dummy.rotation.x = Math.PI;
-                if (direction === 0) dummy.rotation.y = -Math.PI / 2;
-                else if (direction === 1) dummy.rotation.y = Math.PI / 2;
-                else if (direction === 2) dummy.rotation.y = Math.PI;
+
             } else if (id === 17) {
                 const direction = meta & 12;
                 if (direction === 4) dummy.rotation.z = Math.PI / 2;
@@ -696,37 +710,5 @@ function compilePresetThumbnail(data, callback) {
 
 // Initialize the Schematic Grid with Preloads on load
 window.addEventListener('DOMContentLoaded', () => {
-    // Render the "Small House" schematic card immediately with safe generated thumbnail
-    compilePresetThumbnail(rawSmallHouseAschem, (smallHouseThumb) => {
-        const smallHouseBlob = new Blob(["ASTRA_SCHEM_V1\n" + JSON.stringify(rawSmallHouseAschem)], { type: "text/plain" });
-        const smallHouseUrl = URL.createObjectURL(smallHouseBlob);
-
-        appendSchematicCard({
-            name: "Cozy Cabin",
-            author: "BarneyTheGod",
-            blocks: rawSmallHouseAschem.blocks.filter(b => b !== 0).length,
-            downloadUrl: smallHouseUrl,
-            imgSrc: smallHouseThumb,
-            fileName: "cozy_cabin.aschem"
-        });
-    });
-
-    // Fallback presets matching your community styling
-    appendSchematicCard({
-        name: "Titanic Hull (Unfinished)",
-        author: "lax1dude",
-        blocks: 34102,
-        downloadUrl: "#",
-        imgSrc: "image2.png", // Stand-in image
-        fileName: "titanic_hull.aschem"
-    });
-
-    appendSchematicCard({
-        name: "Castle Watchtower",
-        author: "MinecraftPRO",
-        blocks: 4890,
-        downloadUrl: "#",
-        imgSrc: "image3.png", // Stand-in image
-        fileName: "castle_watchtower.aschem"
-    });
+    // Dynamically load schematics here in the future
 });
